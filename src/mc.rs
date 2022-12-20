@@ -22,7 +22,7 @@ pub fn old_fast_table() -> [f32; 4096] {
 pub fn new_fast_table() -> [f32; 4096] {
     let mut table = [0.0f32; 4096];
     for i in 0..table.len() {
-        table[i] = (i as f64 * PI * 2.0 / 4096.0).sin() as f32;
+        table[i] = weird_round((i as f64 * PI * 2.0 / 4096.0).sin());
     }
     table
 }

@@ -66,7 +66,8 @@ impl eframe::App for App {
                 Layout::right_to_left(egui::Align::Center),
                 |ui|
             {
-                if ui.button("Go").clicked() || self.live {
+                let go_button = ui.add_sized([29.844, 0.0], egui::Button::new("Go"));
+                if go_button.clicked() || self.live {
                     self.angle = self.text_angle.parse().unwrap_or(self.angle);
                 }
                 ui.text_edit_singleline(&mut self.text_angle);
@@ -80,7 +81,7 @@ impl eframe::App for App {
                 ui.selectable_value(&mut self.selected_table, SelectedTable::NewFast, "New Optifine");
                 let remaining = frame.info().window_info.size.x - ui.cursor().min.x;
                 ui.add_space(remaining - 38.0);
-                ui.toggle_value(&mut self.live, "Live");
+                ui.toggle_value(&mut self.live, "Live").rect.width();
             });
             
             ui.separator();
@@ -100,21 +101,21 @@ impl eframe::App for App {
                         cos_index = vanilla_cos_index(radians);
                         sin_value = self.vanilla_table[sin_index];
                         cos_value = self.vanilla_table[cos_index];
-                        cos_index_adj = (cos_index as isize - 16384) % 65536;
+                        cos_index_adj = (cos_index as isize - 16384).rem_euclid(65536);
                     },
                     SelectedTable::OldFast => {
                         sin_index = old_fast_sin_index(radians);
                         cos_index = old_fast_cos_index(radians);
                         sin_value = self.old_fast_table[sin_index];
                         cos_value = self.old_fast_table[cos_index];
-                        cos_index_adj = (cos_index as isize - 1024) % 4096;
+                        cos_index_adj = (cos_index as isize - 1024).rem_euclid(4096);
                     },
                     SelectedTable::NewFast => {
                         sin_index = new_fast_sin_index(radians);
                         cos_index = new_fast_cos_index(radians);
                         sin_value = self.new_fast_table[sin_index];
                         cos_value = self.new_fast_table[cos_index];
-                        cos_index_adj = (cos_index as isize - 1024) % 4096;
+                        cos_index_adj = (cos_index as isize - 1024).rem_euclid(4096);
                     }
                 };
                 let sin_angle = sin_value.asin().to_degrees();
