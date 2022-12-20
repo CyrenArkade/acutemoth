@@ -16,6 +16,7 @@ fn main() {
             width: 512,
         }),
         initial_window_size: Some(egui::vec2(312.0, 155.0)),
+        resizable: false,
         centered: true,
         ..Default::default()
     };
@@ -135,7 +136,7 @@ impl eframe::App for App {
                 ui.label("Cos");
                 ui.label(format!("{:.8}", cos_value));
                 ui.label(format!("{:.8}", cos_angle));
-                ui.label(format!("{} ({})", cos_index, cos_index_adj));
+                ui.label(format!("{} ({})", cos_index_adj, cos_index));
                 ui.end_row();
 
                 ui.label("Normal");
